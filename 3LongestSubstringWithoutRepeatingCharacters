@@ -1,0 +1,30 @@
+public int LengthOfLongestSubstring(string s) {
+        if(s == null || s.Length == 0)
+            return 0;
+        
+        Dictionary<char,int> store = new Dictionary<char,int>();
+        int maxlen = 0;
+        int len = 0;
+        int substringStartPosition = 0;
+        for(int i = 0; i < s.Length; i++)
+        {
+            if(!store.ContainsKey(s[i]))
+            {
+                store.Add(s[i], i);
+                len++;
+                maxlen = len > maxlen ? len : maxlen;
+            }
+            else
+            {
+                int repeatedIndex = store[s[i]];
+                len = i - repeatedIndex;
+                for(int j = substringStartPosition; j <= repeatedIndex; j++)
+                    store.Remove(s[j]);
+                
+                substringStartPosition = repeatedIndex + 1;
+                store.Add(s[i], i);
+            }
+        }
+        
+        return maxlen;
+    }
